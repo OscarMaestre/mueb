@@ -14,11 +14,14 @@ class Inmueble(models.Model):
     habitaciones    = models.IntegerField()
     m2              = models.IntegerField()
     otros           = models.CharField( max_length = 30)
-    
+    class Meta:
+        db_table="inmuebles"
     def __str__(self):
         return "Inm"
 class Precio ( models.Model ):
     inmueble    = models.ForeignKey ( Inmueble )
     fecha       = models.DateField()
     precio      = models.IntegerField()
+    class Meta:
+        db_table="precios"
     

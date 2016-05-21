@@ -2,10 +2,11 @@
 #coding=utf-8
 
 import os, sys
-
+from time import sleep
 from utilidades.ficheros.GestorFicheros import GestorFicheros
 from constantes import *
 
+MS_ESPERA_ENTRE_PAGINAS = 3000
 
 gf=GestorFicheros()
 gf.crear_directorio ( SUBDIRECTORIO_HTML_AL )
@@ -16,3 +17,4 @@ for i in range(1, TOTAL_PAGINAS_AL):
     print ( url_descarga, fichero_destino )
     if not gf.existe_fichero( fichero_destino ):
         gf.descargar_fichero(url_descarga, fichero_destino)
+        sleep ( MS_ESPERA_ENTRE_PAGINAS )
