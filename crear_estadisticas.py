@@ -18,9 +18,9 @@ def get_objetos(consulta_sql):
     filas = cursor.fetchall()
     return (filas)
 
-def generar_objeto_datos(etiqueta, lista_valores):
+def generar_objeto_datos(etiqueta, lista_valores, color):
     valores_separados_por_comas=",".join ( lista_valores )
-    objeto_datos="{"+OBJETO_DATOS.format ( etiqueta, valores_separados_por_comas ) +"}"
+    objeto_datos="{"+OBJETO_DATOS.format ( etiqueta, valores_separados_por_comas, color ) +"}"
     return objeto_datos
     
 contexto=dict()
@@ -61,14 +61,16 @@ contexto["precios_medios_por_tipo"]=pisos_por_tipo
 
 
 objetos_js_graficos=[]
+indice_color=0
 for t in TIPOS:
     filas=get_objetos ( CONSULTA_PRECIO_MEDIO_POR_TIPO_Y_FECHA.format(t) )
     valores=[]
     for f in filas:
         valores.append( FORMATO_MEDIAS.format (f[1]) )
     #print (valores)
-    objeto_js = generar_objeto_datos ( t, valores )
+    objeto_js = generar_objeto_datos ( t, valores, COLORES_TIPOS[indice_color] )
     objetos_js_graficos.append ( objeto_js )
+    indice_color=indice_color+1
 #print (objetos_js_graficos)
 tuplas_valores_pisos=",".join( objetos_js_graficos )
 

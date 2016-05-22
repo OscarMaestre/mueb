@@ -4,6 +4,9 @@
 SUBDIRECTORIO_HTML_AL="al"
 SUBDIRECTORIO_HTML_OT="OT"
 TIPOS=["Piso", "Casa", "Chalet", "Dúplex", "Ático", "Estudio", "Finca"]
+COLORES_TIPOS=["(220, 220, 0, 0.4)", "(0, 220, 220, 0.4)", "(90,240, 190, 0.4)",
+               "(22, 220, 220, 0.4)", "(20, 22, 220, 0.4)", "(90,24, 190, 0.4)",
+               "(20, 30, 190, 0.4)"]
 FICHERO_BASE_AL="pagina_{0}.html"
 
 TOTAL_PAGINAS_AL=68
@@ -16,8 +19,8 @@ OBJETO_DATOS="""
                     label: \"{0}\",
                     fill: false,
                     lineTension: 0,
-                    backgroundColor: \"rgba(75,192,192,0.4)\",
-                    borderColor: \"rgba(75,192,192,1)\",
+                    backgroundColor: \"rgba{2}\",
+                    borderColor: \"rgba{2}\",
                     borderCapStyle: \"butt\",
                     borderDash: [],
                     borderDashOffset: 0.0,
