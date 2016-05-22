@@ -18,7 +18,12 @@
     </style>
 </head>
 <body>
-    <h1>Precios medios a fecha de {{fecha_hoy}}</h1>
+    <h1>Estadisticas a fecha de {{fecha_hoy}}</h1>
+    
+    <h2>Evolución cantidad inmuebles</h2>
+    <canvas id="grafico_cantidad_inmuebles" width="800" height="400"></canvas>
+    <br/><br/>
+    <h2>Precios medios a fecha de {{fecha_hoy}}</h2>
     <table class="tabla">
         <tr>
             <td class="celdatabla">TIPO</td> <td class="celdatabla">Euros</td>
@@ -29,7 +34,60 @@
         </tr>
     {%endfor%}
     <table></table>
+
+
 <canvas id="grafico" width="800" height="400"></canvas>
+
+
+<h2>Inmuebles que se vendieron a fecha de ayer {{fecha_ayer}}</h2>
+
+<table class="tabla">
+    <thead>
+        <tr>
+            <td class="celdatabla">Descripcion</td>
+            <td class="celdatabla">Precio</td>
+            <td class="celdatabla">Tipo</td>
+            <td class="celdatabla">Habitaciones</td>
+            <td class="celdatabla">M<sup>2</sup></td>
+            <td class="celdatabla">Planta</td>
+        </tr>
+    </thead>
+    {%for v in vendidos_ayer%}
+        <tr>
+            <td class="celdatabla">{{v.1}}</td>
+            <td class="celdatabla"> {{v.6}} euros</td>
+            <td class="celdatabla">{{v.2}}</td>
+            <td class="celdatabla">{{v.3}}</td>
+            <td class="celdatabla">{{v.4}}</td>
+            <td class="celdatabla">{{v.5}}</td>
+        </tr>
+    {%endfor%}
+</table>
+
+<h2>Inmuebles que aparecen hoy {{fecha_hoy}}</h2>
+
+<table class="tabla">
+    <thead>
+        <tr>
+            <td class="celdatabla">Descripcion</td>
+            <td class="celdatabla">Precio</td>
+            <td class="celdatabla">Tipo</td>
+            <td class="celdatabla">Habitaciones</td>
+            <td class="celdatabla">M<sup>2</sup></td>
+            <td class="celdatabla">Planta</td>
+        </tr>
+    </thead>
+    {%for v in aparecidos_hoy%}
+        <tr>
+            <td class="celdatabla">{{v.1}}</td>
+            <td class="celdatabla"> {{v.6}} euros</td>
+            <td class="celdatabla">{{v.2}}</td>
+            <td class="celdatabla">{{v.3}}</td>
+            <td class="celdatabla">{{v.4}}</td>
+            <td class="celdatabla">{{v.5}}</td>
+        </tr>
+    {%endfor%}
+</table>
 
     <script type="text/javascript">
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -9250,19 +9308,39 @@ module.exports = function(Chart) {
     </script>
     <script type="text/javascript">
         var datos = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            {%autoescape off%}
+            labels: [{{lista_fechas}}],
             datasets: [
-                {%autoescape off%}
+                
                 {{valores_graficos}}
-                {%endautoescape%}
+                
             ]
+            {%endautoescape%}
         };
         
         ctx=document.getElementById("grafico")
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: datos
+        });
+        
+        var datos_cantidad_inmuebles = {
+            {%autoescape off%}
+            labels: [{{lista_fechas}}],
+            datasets: [
+                
+                {{valores_graficos_inmuebles}}
+                
+            ]
+            {%endautoescape%}
+        };
+        
+        ctx=document.getElementById("grafico_cantidad_inmuebles")
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: datos_cantidad_inmuebles
         });        
     </script>
 </body>
 </html>
+

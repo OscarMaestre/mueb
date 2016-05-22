@@ -4,6 +4,7 @@
 
 from constantes import *
 from utilidades.basedatos.Configurador import Configurador
+from datetime import timedelta
 configurador=Configurador("mu")
 configurador.activar_configuracion("mu.settings")
 
@@ -23,12 +24,22 @@ def generar_objeto_datos(etiqueta, lista_valores, color):
     objeto_datos="{"+OBJETO_DATOS.format ( etiqueta, valores_separados_por_comas, color ) +"}"
     return objeto_datos
     
+def get_inmuebles_vendidos( ayer, hoy):
+    sql=CONSULTA_VENDIDOS_AYER.format ( ayer, hoy )
+    
 contexto=dict()
 
 fechas=Precio.objects.values_list("fecha").order_by("fecha").distinct()
+v_fechas=[]
+for f in fechas:
+    
+    fecha_a_insertar=f[0].strftime("%d-%m-%Y")
+    #print (fecha_a_insertar)
+    v_fechas.append ( "'"+fecha_a_insertar+"'" )
 
 hoy=fechas[len(fechas)-1]
-
+ayer=hoy[0]-timedelta(days=1)
+lista_fechas=",".join(v_fechas)
 #print (fechas[0])
 #print (hoy)
 
@@ -50,6 +61,24 @@ Select fecha, avg(precio)
         group by fecha order by fecha
 """
 
+CONSULTA_CANTIDAD_INMUEBLES_POR_FECHA="""
+SELECT fecha, count(precio)
+    from precios
+    group by fecha
+    order by fecha;
+"""
+
+CONSULTA_VENDIDOS_AYER="""
+select enlace, descr, tipo, habitaciones, m2, otros, p1.precio
+    from precios as p1, inmuebles
+        where fecha="{0}"
+            and
+                p1.inmueble_id=inmuebles.codigo_pagina
+            and
+                p1.inmueble_id not in
+                    (select inmueble_id from precios where fecha="{1}")
+"""
+
 pisos=get_objetos(CONSULTA_PRECIO_MEDIO_POR_TIPO)
 pisos_por_tipo=[]
 for p in pisos:
@@ -57,6 +86,7 @@ for p in pisos:
     pisos_por_tipo.append ( [p[0], valor ])
     
 contexto["fecha_hoy"]=hoy[0].strftime("%d-%m-%Y")
+contexto["fecha_ayer"]=ayer.strftime("%d-%m-%Y")
 contexto["precios_medios_por_tipo"]=pisos_por_tipo
 
 
@@ -74,6 +104,19 @@ for t in TIPOS:
 #print (objetos_js_graficos)
 tuplas_valores_pisos=",".join( objetos_js_graficos )
 
+inmuebles_por_dia=get_objetos ( CONSULTA_CANTIDAD_INMUEBLES_POR_FECHA )
+lista_inmuebles=[]
+for i in inmuebles_por_dia:
+    lista_inmuebles.append ( str(i[1]) )
+objeto_js_cantidad_inmuebles=generar_objeto_datos ( "Cantidad por dia", lista_inmuebles, "(0, 190, 0)" )
+
+
+vendidos_ayer=get_objetos(CONSULTA_VENDIDOS_AYER.format (ayer.strftime("%Y-%m-%d"),hoy[0].strftime("%Y-%m-%d") ) )
+aparecidos_hoy=get_objetos(CONSULTA_VENDIDOS_AYER.format (hoy[0].strftime("%Y-%m-%d"), ayer.strftime("%Y-%m-%d") ) )
 contexto["valores_graficos"]=tuplas_valores_pisos
+contexto["lista_fechas"]=lista_fechas
+contexto["valores_graficos_inmuebles"]=objeto_js_cantidad_inmuebles
+contexto["vendidos_ayer"]=vendidos_ayer
+contexto["aparecidos_hoy"]=aparecidos_hoy
 resultado=render_to_string("mueb/estadisticas.html", contexto)
 print (resultado)

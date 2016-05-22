@@ -13,6 +13,7 @@ class Inmueble(models.Model):
     tipo            = models.CharField( max_length = 20 )
     habitaciones    = models.IntegerField()
     m2              = models.IntegerField()
+    con_garaje      = models.BooleanField()
     otros           = models.CharField( max_length = 30)
     class Meta:
         db_table="inmuebles"

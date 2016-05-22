@@ -39,6 +39,14 @@ def procesar_pagina_al ( i, gf ):
         enlace = info.find ( "a", "item-link" )
         texto_enlace=enlace.string.strip()
         precio_visto = info.find("span", "item-price")
+        print (precio_visto)
+        hermano_precio_visto=precio_visto.next_sibling.next_sibling
+        garaje_incl=False
+        if hermano_precio_visto!=None:
+            texto=hermano_precio_visto.string
+            if texto=="Garaje incluido":
+                garaje_incl=True
+                print (texto)
         id_inm=enlace["href"].replace ("/inmueble/", "")[:-1]
         url_in=URL_BASE_CORREGIDA+enlace["href"]
         print (url_in)
@@ -63,7 +71,7 @@ def procesar_pagina_al ( i, gf ):
         c=Inmueble (
             pagina="al", habitaciones=habitaci,
             enlace=url_in, m2=superf, fecha_inclusion=hoy, codigo_pagina=id_inm,
-            tipo=tipo_inm, descr=texto_enlace, otros=otro
+            tipo=tipo_inm, descr=texto_enlace, otros=otro, con_garaje=garaje_incl
         )
         objetos.append(c)
         euros=precio_visto.contents[0].replace(".", "")
@@ -71,7 +79,7 @@ def procesar_pagina_al ( i, gf ):
             inmueble=c, precio=int(euros), fecha=hoy
         )
         precios.append (p)
-        print (c)
+        #print (c)
         #gf.descargar_fichero ( url_in, SUBDIRECTORIO_HTML_AL + os.sep + "id_"+id_inm+".html")
     fichero.close()
     return (objetos, precios)
@@ -96,4 +104,3 @@ with transaction.atomic():
     for p in lista_precios:
         print (p.precio)
         p.save()
-    
