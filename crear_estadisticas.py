@@ -57,7 +57,7 @@ CONSULTA_PRECIO_MEDIO_POR_TIPO_Y_FECHA="""
 Select fecha, avg(precio)
     from inmuebles, precios
     where inmuebles.codigo_pagina=precios.inmueble_id
-        and tipo='{0}'
+        and tipo='{0}' and precio<>0
         group by fecha order by fecha
 """
 
@@ -75,6 +75,8 @@ select enlace, descr, tipo, habitaciones, m2, otros, p1.precio
             and
                 p1.inmueble_id=inmuebles.codigo_pagina
             and
+                p1.precio<>0
+            and 
                 p1.inmueble_id not in
                     (select inmueble_id from precios where fecha="{1}")
 """
