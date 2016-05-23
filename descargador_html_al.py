@@ -17,4 +17,4 @@ for i in range(1, TOTAL_PAGINAS_AL):
     print ( url_descarga, fichero_destino )
     if not gf.existe_fichero( fichero_destino ):
         gf.descargar_fichero(url_descarga, fichero_destino)
-        sleep ( SEG_ESPERA_ENTRE_PAGINAS )
+        sleep ( SEGS_ESPERA_ENTRE_PAGINAS )
