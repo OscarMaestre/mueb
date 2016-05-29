@@ -69,7 +69,7 @@ SELECT fecha, count(precio)
 """
 
 CONSULTA_VENDIDOS_AYER="""
-select enlace, descr, tipo, habitaciones, m2, otros, p1.precio
+select enlace, descr, tipo, habitaciones, m2, otros, p1.precio, pagina
     from precios as p1, inmuebles
         where fecha="{0}"
             and
