@@ -26,27 +26,27 @@ def get_tipo(texto):
             return t
     return "DESC"
 
-def get_num_habitaciones ( texto ):
-    pos_hab=texto.find("hab")
-    if pos_hab!=-1:
-        numero=texto[pos_hab-2:pos_hab-1]
-        #print (numero)
-        return int(numero)
-    return 0
+def get_num_habitaciones ( div ):
+    print ("Obteniendo num habs")
+    cad_num=div.span.string
+    trozos=cad_num.split(" ")
+    print (trozos[0])
+    return int(trozos[0])
 
-def get_superficie(texto):
-    habs="hab."
-    pos_hab=texto.find(habs)
-    if pos_hab!=-1:
-        pos_sup=texto[pos_hab:].find("m")
-        if pos_sup!=-1:
-            numero = texto[pos_hab+len(habs)+1:pos_hab+pos_sup]
-            numero=numero.strip()
-            print ("m2",numero)
-            return int(numero)
-        else:
-            return 0
-    return 0
+def get_superficie(div):
+    spans=div.find_all("span", "re-Card-feature")
+    span_sup=spans[-1]
+    #print (span_sup)
+    trozos=span_sup.string.split(" ")
+    return int(trozos[0])
+
+def obtener_id_inmueble(url):
+    print("Obteniendo enlace:"+url)
+    trozos=url.split("?RowGrid")
+    url=trozos[0]
+    identificador=url[-9:]
+    print("ID:"+identificador)
+    return identificador
 def procesar_pagina_to ( i, gf ):
     
     objetos=[]
@@ -56,23 +56,32 @@ def procesar_pagina_to ( i, gf ):
     fichero =open (nombre_fichero, encoding="utf-8")
     sopa = BeautifulSoup ( fichero, "html.parser")
     
-    items = sopa.find_all ( "div", "o-card_content")
+    items = sopa.find_all ( "div", "re-Searchresult-itemRow")
+    print ("Encontre:"+str(len(items)))
     for item in items:
-        enlace_descripcion=item.find ( "span", "location")
+        enlace_descripcion=item.find ( "a", "re-Card-title")
+        
         texto_enlace=enlace_descripcion.string.strip()
-        print (texto_enlace)
-        precio_visto = item.find("span", "property-card_price").string.strip()[:-2]
+        print ("Descripcion:"+texto_enlace)
+        #Recuperamos el precio
+        
+        contenedor_precio_visto = item.find("span", "re-Card-price")
+        precio_visto=contenedor_precio_visto.span.string
         if precio_visto.find("consult")!=-1:
             precio_visto="0"
         print (precio_visto)
-        caracteristicas=item.find_all("span")[3].string
+        caracteristicas=item.find("div", "re-Card-wrapperFeatures")
+        #print(caracteristicas)
         tipo_inm=get_tipo(caracteristicas)
+        
         habitaci=get_num_habitaciones(caracteristicas)
+        
         superf=get_superficie(caracteristicas)
         print (tipo_inm, ">>>hab>>>", habitaci, ">>>>", superf)
-        enlace_ampl=item.find("a", "property-location")
+        
+        enlace_ampl=item.find("a", "re-Card-title")
         url_in=enlace_ampl["href"]
-        id_inm=enlace_ampl["propertyid"]
+        id_inm=obtener_id_inmueble(url_in)
         print (url_in)
         otro=""
         garaje_incl=False
