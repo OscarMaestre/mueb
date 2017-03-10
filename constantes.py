@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 #coding=utf-8
 
+import platform
+import os
+import requests
+
 SUBDIRECTORIO_HTML_AL="al"
 SUBDIRECTORIO_HTML_TO="to"
 TIPOS=["Piso", "Casa", "Chalet", "Dúplex", "Ático", "Estudio", "Finca"]
