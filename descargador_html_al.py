@@ -3,7 +3,6 @@
 
 import os, sys
 from time import sleep
-from utilidades.ficheros.GestorFicheros import GestorFicheros
 from constantes import *
 
 SEGS_ESPERA_ENTRE_PAGINAS = 3
