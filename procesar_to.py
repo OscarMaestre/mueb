@@ -2,8 +2,7 @@
 #coding=utf-8
 
 import glob, os, sys, re
-from utilidades.ficheros.GestorFicheros import GestorFicheros
-from utilidades.basedatos.Configurador import Configurador
+
 
 from constantes import *
 from bs4 import BeautifulSoup
@@ -30,7 +29,7 @@ def get_num_habitaciones ( div ):
     print ("Obteniendo num habs")
     cad_num=div.span.string
     trozos=cad_num.split(" ")
-    print (trozos[0])
+    #print (trozos[0])
     return int(trozos[0])
 
 def get_superficie(div):
@@ -52,12 +51,12 @@ def procesar_pagina_to ( i, gf ):
     objetos=[]
     precios=[]
     nombre_fichero = SUBDIRECTORIO_HTML_TO + os.sep + FICHERO_BASE_TO.format ( i )
-    print ("Abriendo "+nombre_fichero)
+    #print ("Abriendo "+nombre_fichero)
     fichero =open (nombre_fichero, encoding="utf-8")
     sopa = BeautifulSoup ( fichero, "html.parser")
     
     items = sopa.find_all ( "div", "re-Searchresult-itemRow")
-    print ("Encontre:"+str(len(items)))
+    #print ("Encontre:"+str(len(items)))
     for item in items:
         enlace_descripcion=item.find ( "a", "re-Card-title")
         
@@ -69,7 +68,7 @@ def procesar_pagina_to ( i, gf ):
         precio_visto=contenedor_precio_visto.span.string
         if precio_visto.find("consult")!=-1:
             precio_visto="0"
-        print (precio_visto)
+        #print (precio_visto)
         caracteristicas=item.find("div", "re-Card-wrapperFeatures")
         #print(caracteristicas)
         tipo_inm=get_tipo(caracteristicas)
@@ -77,12 +76,12 @@ def procesar_pagina_to ( i, gf ):
         habitaci=get_num_habitaciones(caracteristicas)
         
         superf=get_superficie(caracteristicas)
-        print (tipo_inm, ">>>hab>>>", habitaci, ">>>>", superf)
+        #print (tipo_inm, ">>>hab>>>", habitaci, ">>>>", superf)
         
         enlace_ampl=item.find("a", "re-Card-title")
         url_in=enlace_ampl["href"]
         id_inm=obtener_id_inmueble(url_in)
-        print (url_in)
+        #print (url_in)
         otro=""
         garaje_incl=False
         c=Inmueble (
@@ -99,7 +98,7 @@ def procesar_pagina_to ( i, gf ):
         #print (c)
         #gf.descargar_fichero ( url_in, SUBDIRECTORIO_HTML_TO + os.sep + "id_"+id_inm+".html")
     fichero.close()
-    print ("Pagina cerrada")
+    #print ("Pagina cerrada")
     return (objetos, precios)
 
 #total=4
@@ -121,5 +120,5 @@ with transaction.atomic():
         
 with transaction.atomic():    
     for p in lista_precios:
-        print (p.precio)
+        #print (p.precio)
         p.save()

@@ -2,7 +2,7 @@
 #coding=utf-8
 
 import platform
-import os
+import os, sys, django
 import requests
 
 SUBDIRECTORIO_HTML_AL="al"
@@ -273,3 +273,20 @@ class GestorFicheros(object):
             self.escribir_en_fichero ( plantilla_rellena, fichero_salida)
         return plantilla_rellena
         
+ 
+
+class Configurador(object):
+    def __init__(self, ruta_proyecto):
+        """
+            Configura django para que podamos importar los modelos
+            
+            
+                Argumentos:
+                
+                    ruta_proyecto -- Ruta al proyecto que contiene los settings
+        """
+        sys.path.append ( ruta_proyecto )
+        
+    def activar_configuracion(self, paquete_settings):
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', paquete_settings)
+        django.setup()

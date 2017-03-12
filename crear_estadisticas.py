@@ -3,7 +3,6 @@
 
 
 from constantes import *
-from utilidades.basedatos.Configurador import Configurador
 from datetime import timedelta
 configurador=Configurador("mu")
 configurador.activar_configuracion("mu.settings")
