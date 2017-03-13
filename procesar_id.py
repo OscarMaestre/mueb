@@ -102,7 +102,7 @@ with transaction.atomic():
         
 with transaction.atomic():    
     for p in lista_precios:
-        print (p.precio)
+        #print (p.precio)
         p.save()
         
 print(hoy)
