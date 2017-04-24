@@ -43,12 +43,14 @@ lista_fechas=",".join(v_fechas)
 #print (hoy)
 
 
+
 FORMATO_MEDIAS="{0:7.0f}"
 
 CONSULTA_PRECIO_MEDIO_POR_TIPO="""
 Select tipo, avg(precio)
     from inmuebles, precios
     where inmuebles.codigo_pagina=precios.inmueble_id
+        and precios.precio<=350000
         group by tipo order by tipo
 """
 
@@ -56,6 +58,7 @@ CONSULTA_PRECIO_MEDIO_POR_TIPO_Y_FECHA="""
 Select fecha, avg(precio)
     from inmuebles, precios
     where inmuebles.codigo_pagina=precios.inmueble_id
+        and precios.precio<=350000
         and tipo='{0}' and precio<>0
         group by fecha order by fecha
 """
