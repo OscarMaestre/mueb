@@ -26,3 +26,19 @@ class Precio ( models.Model ):
     class Meta:
         db_table="precios"
     
+class Favorito(models.Model):
+    enlace          = models.URLField(primary_key=True)
+    habitaciones    = models.IntegerField()
+    m2              = models.IntegerField()
+    descr           = models.CharField ( max_length=240 )
+    def __str__(self):
+        return self.enlace
+    class Meta:
+        db_table="favoritos"
+        
+class PrecioFavorito(models.Model):
+    inmueble    = models.ForeignKey ( Favorito )
+    fecha       = models.DateField()
+    precio      = models.IntegerField()
+    class Meta:
+        db_table="preciosfavoritos"

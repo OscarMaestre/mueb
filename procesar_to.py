@@ -5,7 +5,7 @@ import glob, os, sys, re
 
 
 from constantes import *
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 
 re_caracteristicas="ctl00_content1_gridphotos_rptGridPhotos"
 expr_regular_caracteristicas=re.compile(re_caracteristicas)
@@ -27,14 +27,20 @@ def get_tipo(texto):
 
 def get_num_habitaciones ( div ):
     print ("Obteniendo num habs")
-    cad_num=div.span.string
+    try:
+        cad_num=div.span.string
+    except:
+        return 0
     trozos=cad_num.split(" ")
     #print (trozos[0])
     return int(trozos[0])
 
 def get_superficie(div):
     spans=div.find_all("span", "re-Card-feature")
-    span_sup=spans[-1]
+    try:
+        span_sup=spans[-1]
+    except:
+        return 0
     #print (span_sup)
     trozos=span_sup.string.split(" ")
     return int(trozos[0])
@@ -55,8 +61,8 @@ def procesar_pagina_to ( i, gf ):
     fichero =open (nombre_fichero, encoding="utf-8")
     sopa = BeautifulSoup ( fichero, "html.parser")
     
-    items = sopa.find_all ( "div", "re-Searchresult-itemRow")
-    #print ("Encontre:"+str(len(items)))
+    items = sopa.find_all ( "div", "re-Card-link")
+    print ("Encontre:"+str(len(items)))
     for item in items:
         enlace_descripcion=item.find ( "a", "re-Card-title")
         
@@ -65,9 +71,12 @@ def procesar_pagina_to ( i, gf ):
         #Recuperamos el precio
         
         contenedor_precio_visto = item.find("span", "re-Card-price")
-        precio_visto=contenedor_precio_visto.span.string
-        if precio_visto.find("consult")!=-1:
+        try:
+            precio_visto=contenedor_precio_visto.contents[0].contents[1]
+        except :
             precio_visto="0"
+        print(precio_visto)
+        
         #print (precio_visto)
         caracteristicas=item.find("div", "re-Card-wrapperFeatures")
         #print(caracteristicas)
@@ -76,7 +85,7 @@ def procesar_pagina_to ( i, gf ):
         habitaci=get_num_habitaciones(caracteristicas)
         
         superf=get_superficie(caracteristicas)
-        #print (tipo_inm, ">>>hab>>>", habitaci, ">>>>", superf)
+        print (tipo_inm, ">>>hab>>>", habitaci, ">>>>", superf)
         
         enlace_ampl=item.find("a", "re-Card-title")
         url_in=enlace_ampl["href"]

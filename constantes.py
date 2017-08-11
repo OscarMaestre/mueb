@@ -15,10 +15,10 @@ FICHERO_BASE_AL="pagina_{0}.html"
 FICHERO_BASE_TO="pagina_to_{0}.html"
 
 TOTAL_PAGINAS_AL=68
-TOTAL_PAGINAS_TO=40
+TOTAL_PAGINAS_TO=48
 URL_BASE_AL="http://www.idealista.com/"
 URL_BASE_TO="http://www.fotocasa.es/"
-URL_PAGINAS_TO=URL_BASE_TO+"comprar/casas/ciudad-real-capital/listado?crp={0}"
+URL_PAGINAS_TO=URL_BASE_TO+"es/comprar/casas/ciudad-real-capital/todas-las-zonas/l/{0}"
 URL_PAGINAS_AL=URL_BASE_AL+"venta-viviendas/ciudad-real-ciudad-real/pagina-{0}.htm"
 
 
