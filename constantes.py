@@ -7,6 +7,7 @@ import requests
 
 SUBDIRECTORIO_HTML_AL="al"
 SUBDIRECTORIO_HTML_TO="to"
+SUBDIRECTORIO_RESULTADOS="resultados"
 TIPOS=["Piso", "Casa", "Chalet", "Dúplex", "Ático", "Estudio", "Finca"]
 COLORES_TIPOS=["(142, 11, 11, 1)", "(2015,172,72, 1)", "(22, 22, 100, 1)",
                "(9,114,9, 1)", "(20, 22, 220, 1)", "(90,24, 190, 1)",

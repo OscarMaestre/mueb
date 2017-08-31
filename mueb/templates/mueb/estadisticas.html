@@ -27,10 +27,12 @@
     <table class="tabla">
         <tr>
             <td class="celdatabla">TIPO</td> <td class="celdatabla">Euros</td>
+            <td class="celdatabla">Desviación media</td>
         </tr>
     {%for p in precios_medios_por_tipo%}
         <tr>
             <td class="celdatabla">{{p.0}} </td> <td class="celdatabla">{{p.1}}</td>
+            <td class="celdatabla">{{p.2}}</td>
         </tr>
     {%endfor%}
     <table></table>
@@ -9293,24 +9295,7 @@ module.exports = function(Chart) {
         });        
     </script>
     
-<h2>Estadisticas por inmuebles</h2>
-{% for tupla in estadistica_por_inmueble%}
-<h4>{{tupla.2}}</h4>
-<br/>Datos:
-    Habitaciones:{{tupla.3}}  
-    m<sup>2</sup>{{tupla.4}} 
-    Altura:{{tupla.5}}
-<!--Esto es el canvas-->
-{%autoescape off%}
-{{tupla.6}}
-{%endautoescape%}
-<!--Esto el grafico-->
-{%autoescape off%}
-{{tupla.7}}
-{%endautoescape%}
-<br/><br/><br/>
 
-{%endfor%}
 </body>
 </html>
 
