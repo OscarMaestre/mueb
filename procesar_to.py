@@ -52,8 +52,8 @@ def obtener_id_inmueble(url):
     identificador=url[-9:]
     print("ID:"+identificador)
     return identificador
+
 def procesar_pagina_to ( i, gf ):
-    
     objetos=[]
     precios=[]
     nombre_fichero = SUBDIRECTORIO_HTML_TO + os.sep + FICHERO_BASE_TO.format ( i )
