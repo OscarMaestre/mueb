@@ -65,8 +65,8 @@ def procesar_pagina_to ( i, gf ):
     print ("Encontre:"+str(len(items)))
     for item in items:
         enlace_descripcion=item.find ( "a", "re-Card-title")
-        
-        texto_enlace=enlace_descripcion.string.strip()
+
+        texto_enlace=enlace_descripcion.contents[4]
         print ("Descripcion:"+texto_enlace)
         #Recuperamos el precio
         
