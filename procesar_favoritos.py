@@ -41,13 +41,14 @@ def procesar_favoritos():
         ]
     temp="t.html"
     for f in favoritos_to:
+        print(f)
         gf.descargar_fichero(f, temp)
         fichero=open(temp, "r")
         bs=BeautifulSoup(fichero, "lxml")
         
         objeto = Favorito.objects.filter(enlace=f)
         if (len(objeto)==0):
-            #print("No Existe")
+            print("No Existe")
             span_habitaciones=bs.find("span", {"id":"litRooms"})
             cad_habitaciones=span_habitaciones.b.text
             num_habitaciones=int(cad_habitaciones)

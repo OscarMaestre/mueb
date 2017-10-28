@@ -100,6 +100,7 @@ def get_estadistica_por_inmueble(conexion_memoria=None):
     lista_inmuebles=[]
     filas=get_objetos(sql_codigos_inmuebles)
     for f in filas:
+        #print(f)
         codigo_pagina   =f[0]
         pagina          =f[1]
         descr           =f[2]
@@ -238,6 +239,23 @@ for p in pisos:
     pisos_por_tipo.append ( [p[0], media_del_precio,
                              FORMATO_MEDIAS.format(desviacion_media) ])
     
+CONSULTA_PISOS_POR_HABS="""
+Select  avg(precio)
+    from inmuebles, precios
+    where inmuebles.codigo_pagina=precios.inmueble_id
+        and precios.precio<=350000
+        and habitaciones={0}
+        and tipo='Piso'
+"""
+
+habitaciones=[2, 3]
+for hab in habitaciones:
+    pisos=get_objetos(CONSULTA_PISOS_POR_HABS.format(hab))
+    
+    media_precio_pisos=FORMATO_MEDIAS.format(pisos[0][0])
+    desviacion_media=calcular_desviacion_por_tipo("Piso", media_precio_pisos)
+    pisos_por_tipo.append(["Piso de "+str(hab), media_precio_pisos, FORMATO_MEDIAS.format(desviacion_media)])
+    
 #sys.exit(-1)
 contexto["fecha_hoy"]=hoy[0].strftime("%d-%m-%Y")
 contexto["fecha_ayer"]=ayer.strftime("%d-%m-%Y")
@@ -256,6 +274,8 @@ for t in TIPOS:
     objeto_js = generar_objeto_datos ( t, valores, COLORES_TIPOS[indice_color] )
     objetos_js_graficos.append ( objeto_js )
     indice_color=indice_color+1
+    
+
 #print (objetos_js_graficos)
 tuplas_valores_pisos=",".join( objetos_js_graficos )
 
