@@ -42,4 +42,4 @@ gf.ejecutar_comando ( PROCESAR_ID_AL , "")
 gf.ejecutar_comando ( PROCESAR_ID_TO , "")
 gf.ejecutar_comando ( CREAR_ESTADISTICAS , ">", FICHERO_RESULTADO)
 
-gf.ejecutar_comando ( "abrowser", FICHERO_RESULTADO )
+gf.ejecutar_comando ( "firefox", FICHERO_RESULTADO )
