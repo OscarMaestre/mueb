@@ -20,7 +20,7 @@ for p in patrones:
     for f in ficheros_a_borrar:
         gf.borrar_fichero ( f )
         
-FICHERO_RESULTADO="resultados" + os.sep +"resultados_{0}.html".format(fecha_hoy)
+FICHERO_RESULTADO="resultados" + os.sep +"resultados.html".format(fecha_hoy)
 
 if platform.system()=="Linux":
     DESCARGADOR_AL      =   "./descargador_html_al.py"
